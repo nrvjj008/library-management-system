@@ -25,3 +25,10 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+.flip-page {
+  width: 300px;  /* Adjust width as per your need */
+  height: 400px; /* Adjust height as per your need */
+  background-color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
