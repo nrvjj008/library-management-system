@@ -18,11 +18,12 @@ export default function Home() {
           <Link href={"/aboutUs"} ><button className={" bg-gold border border-black rounded py-2 px-4 hover:bg-black/20 hover:shadow-2xl"}>About Us</button></Link>
         </div>
         <div>
-          <p className={"text-black text-3xl font-extrabold flex justify-end px-8 text-end"} dir={"rtl"}>أهلاً وسهلاً بكم في مكتبة نسق للكتب والأبحاث حول الفن والثقافة .  نشارك المعرفة ونضيف إلى الحياة نسقاً جميلًا</p>
+          <p className={"text-black text-3xl font-extrabold flex justify-start px-4 text-end"} dir={"rtl"}>أهلاً وسهلاً بكم في مكتبة نسق للكتب والأبحاث حول الفن والثقافة .</p>
+          <p className={"text-black text-3xl font-extrabold flex justify-start px-4 text-end"} dir={"rtl"}> نشارك المعرفة ونضيف إلى الحياة نسقاً جميلًاا</p>
         </div>
         <div className={"flex space-x-2"}>
-          <Link href={"/login"} ><button className={" bg-gold border border-black  rounded py-2 px-4 hover:bg-black/20 hover:shadow-2xl"}>Log In</button></Link>
-          <Link href={"/signUp"} ><button className={" bg-gold border border-black rounded py-2  px-4 hover:bg-black/20 hover:shadow-2xl"}>Sign Up</button></Link>
+          {/*<Link href={"/login"} ><button className={" bg-gold border border-black  rounded py-2 px-4 hover:bg-black/20 hover:shadow-2xl"}>Log In</button></Link>*/}
+          {/*<Link href={"/signUp"} ><button className={" bg-gold border border-black rounded py-2  px-4 hover:bg-black/20 hover:shadow-2xl"}>Sign Up</button></Link>*/}
 
         </div>
       </div>
