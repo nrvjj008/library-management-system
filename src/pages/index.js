@@ -18,8 +18,8 @@ export default function Home() {
           <Link href={"/aboutUs"} ><button className={" bg-gold border border-black rounded py-2 px-4 hover:bg-black/20 hover:shadow-2xl"}>About Us</button></Link>
         </div>
         <div>
-          <p className={"text-black text-lg xl:text-2xl font-bold  px-4 "} dir={"rtl"}>أهلاً وسهلاً بكم في مكتبة نسق للكتب والأبحاث حول الفن والثقافة .</p>
-          <p className={"text-black text-lg xl:text-2xl font-bold  px-4 pt-4 "} dir={"rtl"}> نشارك المعرفة ونضيف إلى الحياة نسقاً جميلًاا</p>
+          <p className={"text-black text-lg xl:text-2xl font-thin  px-4 "} dir={"rtl"}>أهلاً وسهلاً بكم في مكتبة نسق للكتب والأبحاث حول الفن والثقافة .</p>
+          <p className={"text-black text-lg xl:text-2xl font-thin  px-4 pt-4 "} dir={"rtl"}> نشارك المعرفة ونضيف إلى الحياة نسقاً جميلًا</p>
         </div>
         <div className={"flex space-x-2"}>
           {/*<Link href={"/login"} ><button className={" bg-gold border border-black  rounded py-2 px-4 hover:bg-black/20 hover:shadow-2xl"}>Log In</button></Link>*/}
