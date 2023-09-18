@@ -8,7 +8,7 @@ const inter = Noto_Sans_Arabic({ subsets: ['arabic'] })
 export default function Home() {
     return (
         <main
-            className={` ${inter.className} relative bg-darkergold text-slate-900 flex min-h-screen  flex-col  font-semibold`}
+            className={` ${inter.className} relative bg-gold text-slate-900 flex min-h-screen  flex-col  font-semibold`}
         >
 
             <div className={"flex w-full  flex-wrap p-4"}>
@@ -21,7 +21,7 @@ export default function Home() {
 
             <div className={" lg:w-3/4 flex flex-col mx-auto my-auto  p-4 py-8 "}>
                 <div className={"h-full"}>
-                <div className={" flex flex-col justify-around  space-y-6 bg-gold/50 rounded relative py-8 w-full"} >
+                <div className={" flex flex-col justify-around  space-y-6 bg-darkergold rounded relative py-8 w-full"} >
                     <p className={"text-black text-xl  lg:text-2xl font-medium  px-4 "} dir={"rtl"}>منصة مكتبة نَسق للإبداع والأبحاث والدراسات النظرية المتخصصة في العمارة والفنون البصرية والفيلم والموسيقى والتصميم، وهي
                     منصة غير ربحيّة، تُعنى بتوفير المصادر والمراجع الفنية، لإثراء المحتوى الفني والعربي. كما تطمح نَسق في المساهمة بنشر المعرفة
                     </p>
