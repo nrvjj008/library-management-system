@@ -6,7 +6,7 @@ export const getAccessToken = () => {
 }
 
 const api = axios.create({
-    baseURL: 'http://localhost:8000/api', // Common base URL for your Django backend
+    baseURL: 'https://nasaqlibrary.org/api', // Common base URL for your Django backend
     timeout: 30000, // 10 seconds
     headers: {
         'Content-Type': 'application/json',
@@ -36,7 +36,7 @@ api.interceptors.response.use((response) => {
         const refreshToken = localStorage.getItem('refresh_token');
 
         try {
-            const res = await axios.post('http://localhost:8000/api/token/refresh/', { refresh: refreshToken });
+            const res = await axios.post('https://nasaqlibrary.org/api/token/refresh/', { refresh: refreshToken });
             if (res.status === 200) {
                 localStorage.setItem('access_token', res.data.access);
                 api.defaults.headers.Authorization = `Bearer ${res.data.access}`;
