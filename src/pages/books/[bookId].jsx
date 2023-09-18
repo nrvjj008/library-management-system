@@ -209,13 +209,21 @@ function BookDetail() {
     });
 
 
+    const [delay, setDelay] = useState(0);  // Initial delay is 0 milliseconds
+
     useEffect(() => {
-        if (inView) {
+        if (inView && !pagesFetched) {
             console.log("Fetching pages...");
-            fetchPages();
-            setPagesFetched(true);
+            // Introducing a delay using setTimeout
+            setTimeout(() => {
+                fetchPages();
+                setPagesFetched(true);
+            }, delay);
+
+            // If you want to increase the delay for subsequent calls, you can update the delay
+            setDelay(5000);  // For example, increase delay to 5 seconds
         }
-    }, [inView]);
+    }, [inView, pagesFetched, delay]);
 
 
     if (!book) return <div>Loading...</div>;
@@ -282,7 +290,7 @@ function BookDetail() {
                                         <>
                                             {/* Other components and notifications for the two-page view. */}
                                             <ShowBook images={bookPages} width={width} height={height} />
-                                            {isEndOfBook && <div className="notification">You have reached the end of the book!</div>}
+                                            {/*{isEndOfBook && <div className="notification">You have reached the end of the book!</div>}*/}
                                         </>
                                     ) : (
 
