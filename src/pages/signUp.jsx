@@ -2,6 +2,7 @@ import Image from 'next/image';
 import SignupForm from '@/components/SignupForm';  // Adjust the path accordingly
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import Link from "next/link";
 
 export default function Signup() {
     const router = useRouter();
@@ -13,17 +14,17 @@ export default function Signup() {
     }, []);
 
     return (
-        <main className={`relative bg-gold text-slate-900 flex min-h-screen p-8 space-y-12 flex-col justify-center items-center`}>
+        <main className={`relative bg-gold text-slate-900 flex min-h-screen p-4 space-y-12 flex-col justify-center items-center`}>
             <div className={"flex w-full"}>
-                <div className={"absolute top-8 left-8 h-[130px] w-[280px] "}>
+                <Link href={"/"} className={"absolute top-8  lg:left-8 h-[130px] w-11/12 lg:w-[280px] flex justify-center items-center  "}>
                     <Image className={"mix-blend-multiply bg-contain "} src={"/logo.png"} fill={true} alt={""} />
-                </div>
+                </Link>
                 <div className={"flex-grow flex justify-center pt-12 items-center"}>
                     <h1 className={"text-4xl text-black font-bold"}>Sign Up</h1>
                 </div>
             </div>
 
-            <div className={"w-1/3 px-12 rounded flex flex-col bg-darkergold p-8"}>
+            <div className={"lg:w-1/3 lg:px-12 rounded flex flex-col bg-darkergold p-8 w-full"}>
                 <SignupForm />
             </div>
         </main>

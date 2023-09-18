@@ -1,8 +1,10 @@
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import api from '../axiosHandler';  // Adjust the path accordingly
+import api from '../axiosHandler';
+import {useState} from "react";  // Adjust the path accordingly
 
 export default function SignupForm() {
+    const [message, setMessage] = useState('');
     const formik = useFormik({
         initialValues: {
             username:'',
@@ -25,6 +27,8 @@ export default function SignupForm() {
                 resetForm();
             } catch (error) {
                 console.error(error);
+                setMessage(error.message);
+
             }
             setSubmitting(false);
         },
@@ -37,14 +41,14 @@ export default function SignupForm() {
                 type="text"
                 placeholder="username"
                 {...formik.getFieldProps('username')}
-                className="p-2 border bg-gold text-slate-700 border-slate-400 rounded"
+                className="placeholder:text-black p-2 border bg-gold text-slate-700 border-slate-400 rounded"
             />
             <input
                 name="email"
                 type="email"
                 placeholder="Email"
                 {...formik.getFieldProps('email')}
-                className="p-2 border bg-gold text-slate-700 border-slate-400 rounded"
+                className="placeholder:text-black p-2 border bg-gold text-slate-700 border-slate-400 rounded"
             />
             {formik.touched.email && formik.errors.email ? <div className="text-red-500">{formik.errors.email}</div> : null}
 
@@ -53,7 +57,7 @@ export default function SignupForm() {
                 type="text"
                 placeholder="Name"
                 {...formik.getFieldProps('name')}
-                className="p-2 border bg-gold text-slate-700 border-slate-400 rounded"
+                className="placeholder:text-black p-2 border bg-gold text-slate-700 border-slate-400 rounded"
             />
             {formik.touched.name && formik.errors.name ? <div className="text-red-500">{formik.errors.name}</div> : null}
 
@@ -61,7 +65,7 @@ export default function SignupForm() {
                 name="reason"
                 placeholder="Reason to join the library"
                 {...formik.getFieldProps('reason')}
-                className="p-2 border bg-gold text-slate-700 border-slate-400 rounded"
+                className="placeholder:text-black p-2 border bg-gold text-slate-700 border-slate-400 rounded"
             ></textarea>
             {formik.touched.reason && formik.errors.reason ? <div className="text-red-500">{formik.errors.reason}</div> : null}
 
@@ -71,7 +75,7 @@ export default function SignupForm() {
                     type={formik.values.showPassword ? "text" : "password"}
                     placeholder="Password"
                     {...formik.getFieldProps('password')}
-                    className="p-2 border bg-gold text-slate-700 border-slate-400 rounded pr-2 w-full"
+                    className="placeholder:text-black p-2 border bg-gold text-slate-700 border-slate-400 rounded pr-2 w-full"
                 />
                 <button
                     type="button"
@@ -87,6 +91,7 @@ export default function SignupForm() {
             <button type="submit" className="bg-blue-950 text-white w-full py-2 px-4 rounded">
                 Sign Up
             </button>
+            {message && <p>{message}</p>}
         </form>
     );
 }

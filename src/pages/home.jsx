@@ -87,7 +87,7 @@ export default function Home() {
                 <h2 className="text-2xl font-bold text-start  mt-8 px-4 py-2">{categoryName}</h2>
 
             <div key={categoryName} className="rounded py-8 bg-darkergold relative">
-                <div className="px-12 gap-5 grid grid-cols-5 overflow-hidden">
+                <div className="px-12 gap-5 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 overflow-hidden">
                     {books.slice(displayRange.start, displayRange.end).map(book => (
                             <Link key={book.id} href={`/books/${book.id}`}  className="  rounded overflow-hidden space-y-4 flex flex-col justify-between items-center">
                                 <img src={book.cover_image} alt={book.title} className="border rounded border-slate-400 h-[300px] w-[200px]  object-cover hover:scale-95 transition-all duration-200 shadow-lg"/>
@@ -113,7 +113,7 @@ export default function Home() {
             <div className="container mx-auto my-10 bg-gold py-8">
                 <div>
                     <h2 className="text-2xl font-bold text-start  mt-8 px-4 py-2">Welcome to Nasaq Library</h2>
-                    <div className={"grid grid-cols-3 bg-slate-100 rounded p-4 gap-4"}>
+                    <div className={"grid grid-cols-1 md:grid-cols-3 bg-slate-100 rounded p-4 gap-4"}>
                     <div className={"border rounded p-4 bg-gold/30 grid grid-cols-4 "}>
                         <img src={"/header1.svg"}  className="w-20 h-20 my-auto rounded  col-span-1 object-fill  "/>
                         <div className={"col-span-3 flex flex-col justify-center"}>

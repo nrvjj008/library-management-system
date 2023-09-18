@@ -1,9 +1,10 @@
 import Link from "next/link";
 import {useEffect, useState} from 'react';
-import {FaSearch, FaUserAlt} from "react-icons/fa";
+import {FaBars, FaSearch, FaUserAlt} from "react-icons/fa";
 import {FaAngleDown} from "react-icons/fa6";
 import api from "@/axiosHandler";
 import {useRouter} from "next/router";
+import Image from "next/image";
 
 export default function NavBar({ onSearch, onCategoryChange }) {
 
@@ -31,6 +32,8 @@ export default function NavBar({ onSearch, onCategoryChange }) {
         setDropdownVisible(false);
         onCategoryChange && onCategoryChange(id);  // Propagate the selected category ID upwards
     }
+    const scientificAndResearchCategory = categories.find(category => category.name === "Scientific and Research");
+
 
     const handleLogout = () => {
         localStorage.removeItem('access_token');  // Clear the token
@@ -46,11 +49,13 @@ export default function NavBar({ onSearch, onCategoryChange }) {
     }
 
 
-
+    const [isMobileNavVisible, setMobileNavVisible] = useState(false);
     return (
-        <nav className="flex justify-between items-center px-4 shadow-sm">
+        <div className={"text-sm md:text-md lg:text-lg"}>
+            <div className="hidden md:block">
+        <nav className="flex  justify-between items-center px-4 shadow-sm">
             <div className="flex items-center">
-                <img src="/logo.png" alt="logo" className="w-[150px] py-4 object-cover mix-blend-multiply mr-2" />
+                <Image src="/logo.png" alt="logo" width={150} height={200} className="w-[150px] py-4 object-cover mix-blend-multiply mr-2" />
             </div>
             <ul className="flex space-x-12 font-bold items-center">
                 {/* ... other nav links ... */}
@@ -63,7 +68,7 @@ export default function NavBar({ onSearch, onCategoryChange }) {
                         onMouseLeave={() => setDropdownVisible(false)} // New: hide on mouse leave
                         className={"flex items-center justify-center space-x-1"}
                     >
-                        <span>Categories</span>
+                        <span>Books</span>
                         <FaAngleDown size={"1rem "} className={"font-bold"}/>
                     </button>
                     {isDropdownVisible && (
@@ -82,6 +87,11 @@ export default function NavBar({ onSearch, onCategoryChange }) {
                         </ul>
                     )}
                 </li>
+                {scientificAndResearchCategory && (
+                    <li>
+                        <Link href={`/categories/${scientificAndResearchCategory.id}`}>Scientific and Research</Link>
+                    </li>
+                )}
                 {/* ... other nav links ... */}
 
                 <li>
@@ -91,31 +101,12 @@ export default function NavBar({ onSearch, onCategoryChange }) {
                 {/*    <Link href="/research">Research & Studies</Link>*/}
                 {/*</li>*/}
 
-
-                <li className="relative flex items-center space-x-2 p-4">
-
-                    <FaUserAlt
-                        onMouseEnter={() => setUserDropdownVisible(true)}
-                        onMouseLeave={() => setUserDropdownVisible(false)} // New: hide on mouse leave
-
-                    />
-                    <FaAngleDown
-                        onMouseEnter={() => setUserDropdownVisible(true)}
-                        onMouseLeave={() => setUserDropdownVisible(false)} // New: hide on mouse leave
-                    />
-                    {isUserDropdownVisible && (
-                        <div className="absolute left-0 top-8 w-[100px] bg-white border border-gray-300 rounded shadow-lg"
-                             onMouseEnter={() => setUserDropdownVisible(true)} // New: remain visible on hover
-                             onMouseLeave={() => setUserDropdownVisible(false)} // New: hide on mouse leave
-                        >
                             <ul>
                                 <li className="px-4 py-2 hover:bg-gray-200">
                                     <a onClick={handleLogout} href="#">Log out</a> {/* Modified this link */}
                                 </li>
                             </ul>
-                        </div>
-                    )}
-                </li>
+
             </ul>
             <div className="flex items-center space-x-2 border  border-slate-500 rounded">
                 <select
@@ -131,7 +122,7 @@ export default function NavBar({ onSearch, onCategoryChange }) {
                 <input
                     type="text"
                     placeholder="Search..."
-                    className="p-2 bg-gold "
+                    className="placeholder:text-black p-2 bg-gold "
                     value={searchText}
                     onChange={(e) => setSearchText(e.target.value)}
                 />
@@ -140,5 +131,49 @@ export default function NavBar({ onSearch, onCategoryChange }) {
                 </button>
             </div>
         </nav>
+            </div>
+            <div className="md:hidden">
+                <nav className="flex justify-between items-center px-4 shadow-sm">
+                    <Image src="/logo.png" alt="logo" width={150} height={200} className="w-[150px] py-4 object-cover mix-blend-multiply mr-2" />
+
+                    <button className="p-2" onClick={() => setMobileNavVisible(!isMobileNavVisible)}> {/* Toggle mobile nav visibility */}
+                        <FaBars size="1.5em" />
+                    </button>
+                </nav>
+                {isMobileNavVisible && (
+                <div className="flex flex-col mt-4 space-y-4">
+                    <Link href="/home">Home</Link>
+                    <div className={"flex space-x-4 items-center"}>Books <FaAngleDown /></div>
+                    {categories.map(category => (
+                        <Link key={category.id} href={`/categories/${category.id}`} className="ml-4">{category.name}</Link>
+                    ))}
+                    <Link href="/favouriteBooks">Favourite Books</Link>
+                    <button className={"w-full   border-slate-500 text-start"} onClick={handleLogout} >Log out</button>
+
+                    {/* Mobile Search */}
+                    <div className="mx-4 flex items-center space-x-2 border border-slate-500 rounded mt-4">
+                        <select
+                            value={searchType}
+                            onChange={(e) => setSearchType(e.target.value)}
+                            className="border-r border-slate-500 p-2 bg-gold"
+                        >
+                            <option value="book">Book</option>
+                            <option value="author">Author</option>
+                            <option value="publisher">Publisher</option>
+                        </select>
+                        <input
+                            type="text"
+                            placeholder="Search..."
+                            className="placeholder:text-black p-2 bg-gold"
+                            value={searchText}
+                            onChange={(e) => setSearchText(e.target.value)}
+                        />
+                        <button className="border rounded p-2 flex justify-center items-center" onClick={handleSearch}>
+                            <FaSearch className="border-l border-slate-500 pl-2" size="1.5em" />
+                        </button>
+                    </div>
+                </div>)}
+            </div>
+            </div>
     )
 };

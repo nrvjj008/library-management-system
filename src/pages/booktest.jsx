@@ -5,9 +5,6 @@ import Modal from 'react-modal';
 import PDFReader from "@/components/PDFReader";
 import NavBar from "@/components/NavBar";
 import React from 'react';
-import Image from 'next/image';
-import { useInView } from 'react-intersection-observer';
-
 
 
 import {
@@ -22,10 +19,7 @@ import {
 } from 'react-icons/fa';
 import {FaHeading, FaHeart, FaX, FaXing} from "react-icons/fa6";
 import FlipBook from "@/components/FlipBook";
-import HTMLFlipBook from "react-pageflip";
-import {Page} from "react-pdf";
-import InfiniteScroll from "react-infinite-scroll-component";
-
+import HTMLFlipBook from "react-pageflip";  // Importing icons
 
 function BookDetail() {
     const router = useRouter();
@@ -44,37 +38,21 @@ function BookDetail() {
     const [bookNote, setBookNote] = useState('');
     const [bookReview, setBookReview] = useState('');
 
+    const [viewMode, setViewMode] = useState('twoPage'); // "twoPage", "onePage", or "fullScreen"
 
     const [isFullScreen, setIsFullScreen] = useState(false);
+    const [isTwoPage, setIsTwoPage] = useState(true);
 
     const [bookPages, setBookPages] = useState([]);
+    const fetchingPagesRef = useRef(false);
     const lastFetchedPageRef = useRef(0);
     const [bookRating, setBookRating] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
     const [isFavourtie, setisFavourite] = useState(false);
-    const [isEndOfBook, setIsEndOfBook] = useState(false);
-    const [reviewAdded, setReviewAdded] = useState(false);
-    const [notesAdded, setNotesAdded] = useState(false);
-
-    const [pagesFetched, setPagesFetched] = useState(false);
+    const [inProgress, setinProgress] = useState(false);
 
 
-    const [isTwoPage, setIsTwoPage] = useState(false);
-
-    useEffect(() => {
-        // Handle window resize events
-        const handleResize = () => {
-            setIsTwoPage(window.innerWidth > 820);
-        };
-
-        window.addEventListener('resize', handleResize);
-
-        return () => {
-            // Cleanup the event listener when the component unmounts
-            window.removeEventListener('resize', handleResize);
-        };
-    }, []);
 
 
 
@@ -105,32 +83,59 @@ function BookDetail() {
         };
     }, [isFullScreen]);
 
-    const isFirstLoad = useRef(true);
-
-    useEffect(() => {
-        // Don't scroll if it's the first load
-
-
-        // Scroll to the last loaded image after fetching new pages
-        const lastImage = document.getElementById('last-loaded-image');
-        console.log(bookPages.length);
-        if (lastImage && bookPages.length > 20) {
-            lastImage.scrollIntoView({ behavior: 'instant' });
-        }
-    }, [bookPages]);
-
     useEffect(() => {
         if (bookId) {
             api.get(`/books/${bookId}/`).then(response => {
                 setBook(response.data);
                 setBookNote(response.data.user_note);
-                fetchPages(currentPage);
+                fetchInitialPages();
             }).catch(error => {
                 console.error(error);
             });
         }
     }, [bookId]);
 
+    // useEffect(() => {
+    //     if (bookId) {
+    //         // Fetch the note for the given book
+    //         api.get(`/book-notes/${bookId}/`).then(response => {
+    //             setBookNote(response.data.text);  // Assuming the response contains the text field
+    //         }).catch(error => {
+    //             console.error(error);
+    //         });
+    //     }
+    // }, [bookId]);
+
+
+    useEffect(() => {
+        if (bookId) {
+
+            // This will be called when the component is mounted.
+            fetchPages(currentPage);
+        }
+    }, [bookId]);
+    const fetchPages = async (startPage) => {
+        setIsLoading(true);
+        try {
+            const response = await api.get(`/book-pages/${bookId}/`, { params: { current_page: startPage } });
+
+            const data = response.data;
+
+            // Append the new pages to the current pages
+            setBookPages(prevBookPages => [...prevBookPages, ...data.page_images]);
+
+        } catch (error) {
+            console.error("Failed to fetch book pages:", error);
+        }finally {
+            setIsLoading(false);
+        }
+    }
+
+    // useEffect(() => {
+    //
+    //
+    //     fetchInitialPages();
+    // }, [bookId]);
     const handleNotesClick = () => {
 
         setShowNotes(!showNotes);
@@ -145,7 +150,6 @@ function BookDetail() {
                 user: localStorage.getItem("user_id"),  // Replace this with the current logged-in user's ID
                 text: bookNote
             }).then(response => {
-                setNotesAdded(true);
                 console.log('Note saved successfully!', response.data);
             }).catch(error => {
                 console.error('Failed to save note:', error);
@@ -160,7 +164,6 @@ function BookDetail() {
                 comment: bookReview,
                 rating: bookRating
             }).then(response => {
-                setReviewAdded(true);
                 console.log('Note saved successfully!', response.data);
             }).catch(error => {
                 console.error('Failed to save note:', error);
@@ -183,123 +186,66 @@ function BookDetail() {
         }
     };
 
-    const fetchPages = async () => {
-        setIsLoading(true);
-        try {
-            const startPage = lastFetchedPageRef.current + 1;
-            const response = await api.get(`/book-pages/${bookId}/`, { params: { current_page: startPage } });
-            const data = response.data;
 
-            setBookPages(prevBookPages => [...prevBookPages, ...data.page_images]);
-
-            if (data.page_images.length < 10) {
-                setIsEndOfBook(true);
-            }
-
-            lastFetchedPageRef.current += data.page_images.length; // Update last fetched page ref
-        } catch (error) {
-            console.error("Failed to fetch book pages:", error);
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    const [ref, inView] = useInView({
-        threshold: 0,
-    });
-
-
-    useEffect(() => {
-        if (inView) {
-            console.log("Fetching pages...");
-            fetchPages();
-            setPagesFetched(true);
-        }
-    }, [inView]);
 
 
     if (!book) return <div>Loading...</div>;
-
-
-
-
-
-
-
-    const handlePageChange = (e) => {
-        const newCurrentPage = e.data;  // Assuming the event provides the current page number
-        setCurrentPage(newCurrentPage);
-        console.log("Current Page:", newCurrentPage);
-
-        if (!isEndOfBook && newCurrentPage >= bookPages.length - 2) {
-            console.log("Fetching more pages...");
-            fetchPages(newCurrentPage + 3);  // adjusted to fetch from page 11 if the current page is 9
-        }
-    };
-
-    // function ShowBook({ images, width, height }) {
-    //     return (
+    // const pageFlipped = (data) => {
+    //     console.log('Current page: ' + data);
     //
-    //     );
+    //     // Set the current page
+    //     setCurrentPage(data);
+    //
+    //     // Check if the user is on the 8th page
+    //     if (data % 10 === 8) {
+    //         fetchPages(data + 1);  // Fetch the next 10 pages
+    //     }
     // }
+    function ShowBook({ images, width, height }) {
+        return (
+            <HTMLFlipBook
+                key={images.length}  // add this line
+                autoSize={true}
+                showPageCorners={true}
+                size={"fixed"}
+                width={width}
+                height={height}
+                className={"shadow-2xl my-auto mx-auto w-full"}
+            >
+                {images.map((image, index) => (
+                    <img className="w-1/2" key={index} src={image} alt={`Page ${index + 1}`} style={{ objectFit: 'cover' }} />
+                ))}
+            </HTMLFlipBook>
+        );
+    }
 
+    React.memo(ShowBook);  // use React.memo
 
-    const ShowBook = React.memo(({ images, width, height }) => (
-        <HTMLFlipBook
-            key={images.length}
-            autoSize={true}
-            showPageCorners={true}
-            size="fixed"
-            width={width}
-            height={height}
-            onFlip={handlePageChange}
-            startPage={currentPage}
-            className="shadow-2xl my-auto mx-auto w-full"
-        >
-            {images.map((image, index) => (
-                <img className="w-1/2" key={index} src={image} alt={`Page ${index + 1}`} style={{ objectFit: 'cover' }} />
-            ))}
-        </HTMLFlipBook>
-    ));
-    ShowBook.displayName = 'ShowBook';
 
     return (
         <div className={"bg-gold min-h-screen w-full text-slate-700 px-8 "}>
             <NavBar/>
+
             {showModal && (
                 <div className={`h-screen ${isFullScreen ? "bg-black" : "bg-black/80"} backdrop-blur fixed inset-0 w-full z-50 flex flex-col`}>
                     <button className={"absolute top-4 right-2 p-2 px-2 py-2 bg-gold rounded-full z-50"} onClick={()=>setShowModal(false)}><FaX/></button>
 
                     {isLoading ? (
-                        <div className="flex-1 h-screen flex justify-center items-center">
+                        <div className="flex-1 flex justify-center items-center">
                             <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-white"></div>
+
                         </div>
                     ) : (
                         <div className="flex-1 flex justify-center items-center overflow-y-hidden relative h-full w-full mx-auto my-auto ">
                             <div className={`w-full flex justify-center items-center relative  ${isFullScreen ? "h-screen w-full" : "w-4/5 mx-auto"}`} >
-                                <div className={"w-full "}>
-                                    {isTwoPage ? (
-                                        <>
-                                            {/* Other components and notifications for the two-page view. */}
-                                            <ShowBook images={bookPages} width={width} height={height} />
-                                            {isEndOfBook && <div className="notification">You have reached the end of the book!</div>}
-                                        </>
-                                    ) : (
-
-                                        <div className="h-[90vh] overflow-y-scroll">
+                                <div className={"w-full  "}>
+                                    {isTwoPage && (<ShowBook images={bookPages} width={width} height={height} />)}
+                                    {!isTwoPage && (
+                                        <div className={"mx-auto m-12 h-screen overflow-y-scroll p-8"}>
                                             {bookPages.map((page, index) => (
-                                                <img
-                                                    key={page}
-                                                    src={page}
-                                                    alt={`Page ${index + 1}`}
-                                                    id={index === bookPages.length - 1 ? 'last-loaded-image' : ''} // Add id only to the last image
-                                                    className={`mx-auto object-contain ${isFullScreen ? "w-11/12" : "w-1/3"} mt-4`}
-                                                />
+                                                <img key={index} src={page} alt={`Page ${index + 1}`} className={`mx-auto object-contain ${isFullScreen?"w-11/12":"w-1/3"}  mt-4 `}  />
                                             ))}
-                                            <div ref={ref} className="mb-4">Loading more...</div>
                                         </div>
-
-
                                     )}
                                 </div>
                             </div>
@@ -307,23 +253,22 @@ function BookDetail() {
                     )}
 
                     <div className="flex justify-center space-x-4 p-4 bg-darkergold">
-                        <button className={"p-2 px-3 py-2 bg-gold shadow-2xl rounded-full"} onClick={() => setIsFullScreen(!isFullScreen)}>{isFullScreen ? "Exit Full Screen" : "Go Full Screen"}</button>
-                        <button className={"p-2 px-3 py-2 bg-gold shadow-2xl rounded-full hidden lg:block"} onClick={()=>setIsTwoPage(true)}>2 Page</button>
-                        <button className={"p-2 px-3 py-2 bg-gold shadow-2xl rounded-full hidden lg:block"} onClick={()=>setIsTwoPage(false)}>1 Page Scroll</button>
+                        <button className={"p-2 px-3 py-2 bg-gold shadow-2xl  rounded-full"} onClick={() => setIsFullScreen(!isFullScreen)}>{isFullScreen ? "Exit Full Screen" : "Go Full Screen"}</button>
+                        <button className={"p-2 px-3 py-2 bg-gold shadow-2xl  rounded-full"} onClick={()=>setIsTwoPage(true)}>2 Page</button>
+                        <button className={"p-2 px-3 py-2 bg-gold shadow-2xl  rounded-full"} onClick={()=>setIsTwoPage(false)}>1 Page Scroll</button>
                     </div>
                 </div>
             )}
 
 
-
             <div className="flex flex-col lg:flex-row bg-white/50 h-full p-2">
-                <div className=" p-2 flex flex-col items-center border border-slate-400 rounded w-full lg:w-[300px]">
+                <div className=" p-2 flex flex-col items-center border border-slate-400 rounded w-[300px]">
                     <img src={book.cover_image} alt={book.title} className={"w-[200px] h-[300px] object-cover hover:scale-95 transition-all duration-200 shadow-2xl"}/>
                     <button className=" hover:bg-blue-700 mt-4 bg-blue-950 w-full text-white py-2 px-4 rounded" onClick={()=>{setShowModal(true)}}>Read Now</button>
-                   <div className={"flex items-center justify-center space-x-4 w-full"}>
-                    <button className={`hover:text-blue-800 mt-4 flex flex-col items-center space-y-2 border rounded border-slate-500 p-1 w-1/2 ${isFavourtie?"bg-red-500":""}`} onClick={handleFavoriteClick}><FaHeart /> Favourite</button>
-                    <button className="hover:text-blue-800 mt-4 flex flex-col items-center space-y-2 border rounded border-slate-500 p-1 w-1/2" onClick={handleReviewClick}><FaCommentAlt /> Review</button>
-                   </div>
+                    <div className={"flex items-center justify-center space-x-4 w-full"}>
+                        <button className={`hover:text-blue-800 mt-4 flex flex-col items-center space-y-2 border rounded border-slate-500 p-1 w-1/2 ${isFavourtie?"bg-red-500":""}`} onClick={handleFavoriteClick}><FaHeart /> Favourite</button>
+                        <button className="hover:text-blue-800 mt-4 flex flex-col items-center space-y-2 border rounded border-slate-500 p-1 w-1/2" onClick={handleReviewClick}><FaCommentAlt /> Review</button>
+                    </div>
                     {showReview && (
                         <div className="mt-4 flex flex-col w-full">
                             <textarea
@@ -332,7 +277,7 @@ function BookDetail() {
                                 placeholder="Add your Review for this book..."
                                 className={"min-h-[100px] h-fit"}
                             />
-                            <div className="flex justify-center py-4 ">
+                            <div className="flex">
                                 {[1, 2, 3, 4, 5].map((star) => (
                                     <span
                                         key={star}
@@ -346,7 +291,7 @@ function BookDetail() {
         </span>
                                 ))}
                             </div>
-                            <button className="hover:text-blue-800 mt-2 bg-blue-950 w-full text-white py-2 px-4 rounded" onClick={handleReview}>{reviewAdded?"Review Added":"Save Review"}</button>
+                            <button className="hover:text-blue-800 mt-2 bg-blue-950 w-full text-white py-2 px-4 rounded" onClick={handleReview}>Save Review</button>
 
                         </div>
                     )}
@@ -359,7 +304,7 @@ function BookDetail() {
                                 placeholder="Add your note for this book..."
                                 className={"min-h-[100px] h-fit"}
                             />
-                            <button className="hover:bg-blue-700 mt-2 bg-blue-950 w-full text-white py-2 px-4 rounded" onClick={handleSaveNote}>{notesAdded?"Saved":"Save Note"}</button>
+                            <button className="hover:bg-blue-700 mt-2 bg-blue-950 w-full text-white py-2 px-4 rounded" onClick={handleSaveNote}>Save Note</button>
 
                         </div>
                     )}

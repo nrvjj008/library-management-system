@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 export default function LoginForm() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [message, setMessage] = useState("");
     const router = useRouter();
 
     const handleSubmit = async (e) => {
@@ -22,6 +23,7 @@ export default function LoginForm() {
 
             router.push('/home');
         } catch (error) {
+            setMessage("Invalid credentials.");
             console.error("An error occurred while fetching data: ", error);
         }
     };
@@ -56,6 +58,7 @@ export default function LoginForm() {
             <button type="submit" className={" w-full bg-gold border border-black shadow-xl   px-4 py-2 rounded font-semibold hover:bg-white/50"}>
                 Login
             </button>
+            {message && <p className="text-red-500">{message}</p>}
         </form>
     );
 }

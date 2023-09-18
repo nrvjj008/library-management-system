@@ -35,23 +35,25 @@ const inter = Inter({ subsets: ['latin'] })
                 }
             } catch (error) {
                 console.error("There was an error sending your message.", error);
-                alert('There was an error sending your message. Please try again.');
+                alert('There was an error sending your message. Please try again later.');
             }
         };
 
         return (
         <div className={"bg-gold text-slate-700"}>
-        <main className={`bg-gold text-slate-900 flex flex-col min-h-screen p-8 items-center ${inter.className}`}>
-            <Link href={"/"} className={"absolute top-8 left-8 h-[130px] w-[280px]  "}>
-                <Image className={"mix-blend-multiply bg-cover "} src={"/logo.png"} fill={true}   alt={""}/>
-            </Link>
-
-            <h1 className="text-2xl text-black font-bold mb-8">Contact Us</h1>
-
-            <div className="my-auto w-3/4 bg-darkergold p-8 flex flex-col space-y-8">
-                <div className="grid grid-cols-5 gap-8">
+        <main className={`bg-gold text-slate-900 flex flex-col justify-center min-h-screen lg:p-8 items-center ${inter.className}`}>
+            <div className={"flex w-full"}>
+                <Link href={"/"} className={"absolute top-8 left-10 lg:left-8 h-[130px] w-3/4 lg:w-[280px] flex justify-center items-center  "}>
+                    <Image className={"mix-blend-multiply bg-contain "} src={"/logo.png"} fill={true} alt={""} />
+                </Link>
+                <div className={"flex-grow flex justify-center py-12 items-center"}>
+                    <h1 className={"text-4xl text-black font-bold"}>Contact Us</h1>
+                </div>
+            </div>
+            <div className="rounded w-11/12 lg:w-3/4 bg-darkergold p-8 flex flex-col space-y-8">
+                <div className="grid grid-cols-1 md:grid-cols-5 md:gap-8">
                     <input
-                        className="py-2 px-4 col-span-3 bg-gold"
+                        className="placeholder:text-black py-2 px-4 col-span-3 bg-gold"
                         type="email"
                         dir="rtl"
                         placeholder="إيميلك"
@@ -60,7 +62,7 @@ const inter = Inter({ subsets: ['latin'] })
                         onChange={handleChange}
                     />
                     <input
-                        className="py-2 px-4 col-span-2 bg-gold"
+                        className="mt-4 md:mt-0 placeholder:text-black py-2 px-4  col-span-2 bg-gold "
                         type="text"
                         dir={"rtl"}
                         placeholder="أسمك الكريم"
@@ -70,7 +72,7 @@ const inter = Inter({ subsets: ['latin'] })
                     />
                 </div>
                 <textarea
-                    className="px-4 bg-gold w-full h-64"
+                    className="placeholder:text-black px-4 bg-gold w-full h-64"
                     placeholder="رسالتك"
                     dir={"rtl"}
                     name="message"

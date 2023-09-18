@@ -47,7 +47,7 @@ export default function CategoryPage() {
             <div className="container mx-auto my-10 bg-gold py-8">
                 {books.length > 0 ? (
                     <>
-                        <div className="grid grid-cols-5 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
                             {books.map(book => (
                                 <div key={book.id} className="space-y-4 flex flex-col justify-between  items-center  p-1">
                                     <img src={book.cover_image} alt={book.title} className="w-[200px] shadow-2xl h-[300px] object-cover hover:scale-95 transition-all duration-200"/>
