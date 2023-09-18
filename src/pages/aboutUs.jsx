@@ -11,12 +11,13 @@ export default function Home() {
             className={` ${inter.className} relative bg-gold text-slate-900 flex min-h-screen  flex-col  font-semibold`}
         >
 
-            <div className={"flex w-full  flex-wrap p-4"}>
-                <Link href={"/"}>
-                    <Image className={"mix-blend-multiply bg-cover aspect-auto"} src={"/logo.png"} height={150} width={200}   alt={""}/>
+            <div className={"flex w-full"}>
+                <Link href={"/"} className={"absolute top-8 left-10 lg:left-8 h-[130px] w-3/4 lg:w-[280px] flex justify-center items-center  "}>
+                    <Image className={"mix-blend-multiply bg-contain "} src={"/logo.png"} fill={true} alt={""} />
                 </Link>
-                <h1 className={"flex-grow  flex items-center justify-center text-2xl text-black font-bold lg:mr-[200px]"}>About Us</h1>
-
+                <div className={"flex-grow flex mt-[150px] lg:mt-0 justify-center py-12 items-center"}>
+                    <h1 className={"text-4xl text-black font-bold"}>About Us</h1>
+                </div>
             </div>
 
             <div className={" lg:w-3/4 flex flex-col mx-auto my-auto  p-4 py-8 "}>
