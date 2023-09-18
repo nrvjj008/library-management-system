@@ -134,7 +134,7 @@ export default function NavBar({ onSearch, onCategoryChange }) {
             </div>
             <div className="md:hidden">
                 <nav className="flex justify-between items-center px-4 shadow-sm">
-                    <Image src="/logo.png" alt="logo" width={150} height={200} className="w-[150px] py-4 object-cover mix-blend-multiply mr-2" />
+                    <Image src={"/logo.png"} alt="logo" width={150} height={200} className="w-[150px] py-4 object-cover mix-blend-multiply mr-2" />
 
                     <button className="p-2" onClick={() => setMobileNavVisible(!isMobileNavVisible)}> {/* Toggle mobile nav visibility */}
                         <FaBars size="1.5em" />
