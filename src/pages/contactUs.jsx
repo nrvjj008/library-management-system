@@ -46,7 +46,7 @@ const inter = Inter({ subsets: ['latin'] })
                 <Link href={"/"} className={"absolute top-8 left-10 lg:left-8 h-[130px] w-3/4 lg:w-[280px] flex justify-center items-center  "}>
                     <Image className={"mix-blend-multiply bg-contain "} src={"/logo.png"} fill={true} alt={""} />
                 </Link>
-                <div className={"flex-grow flex justify-center py-12 items-center"}>
+                <div className={"mt-[150px] lg:mt-0 flex-grow flex justify-center py-12 items-center"}>
                     <h1 className={"text-4xl text-black font-bold"}>Contact Us</h1>
                 </div>
             </div>
