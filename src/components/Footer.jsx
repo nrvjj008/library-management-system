@@ -14,7 +14,7 @@ export default function Footer() {
                     <FaInstagram  size={"2.5em"} className={"px-2"} />
 
             </Link>
-            \<Link href="https://twitter.com/nasaqlibrary">
+            <Link href="https://twitter.com/nasaqlibrary">
                     <FaTwitter  size={"2.5em"} className={"px-2"} />
 
             </Link>
