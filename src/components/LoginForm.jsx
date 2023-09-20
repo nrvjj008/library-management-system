@@ -33,7 +33,7 @@ export default function LoginForm() {
         <form onSubmit={handleSubmit} className={"flex flex-col mx-auto space-y-8 items-center justify-center"}>
 
             <div className="flex flex-col space-y-2 w-full">
-                <label htmlFor="email" className="font-semibold">Email:</label>
+                <label htmlFor="email" className="font-semibold">Username:</label>
                 <input
                     id="email"
                     className={"px-4 py-2 border border-slate-500 rounded w-full bg-gold text-slate-800 min-w-[300px]"}
