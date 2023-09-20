@@ -1,9 +1,10 @@
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import api, {getAccessToken} from "@/axiosHandler";
 import NavBar from "@/components/NavBar";
 import {useRouter} from "next/router";
+import Footer from "@/components/Footer";
 
 export default function Home() {
 
@@ -148,6 +149,7 @@ export default function Home() {
                     Object.entries(data).map(([categoryName, books]) => <Category key={categoryName} categoryName={categoryName} books={books} />)
                 )}
             </div>
+            <Footer/>
         </div>
     );
 }

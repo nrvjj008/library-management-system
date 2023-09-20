@@ -2,6 +2,8 @@ import Image from 'next/image'
 import {Inter, Noto_Sans_Arabic, Nunito, Open_Sans} from 'next/font/google'
 import LoginForm from "@/components/LoginForm";
 import Link from "next/link";
+import Footer from "@/components/Footer";
+import React from "react";
 
 const inter = Noto_Sans_Arabic({ subsets: ['arabic'] })
 
@@ -27,7 +29,7 @@ export default function Home() {
 
         </div>
       </div>
-
+      <Footer/>
     </main>
   )
 }

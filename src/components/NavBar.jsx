@@ -36,9 +36,11 @@ export default function NavBar({ onSearch, onCategoryChange }) {
 
 
     const handleLogout = () => {
-        localStorage.removeItem('access_token');  // Clear the token
+        localStorage.clear();  // Clear everything from localStorage
+
         router.push('/');  // Redirect to root (or login page)
     };
+
 
 
 // Then, within the dropdown menu, modify the category link:

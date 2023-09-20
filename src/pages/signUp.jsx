@@ -1,8 +1,9 @@
 import Image from 'next/image';
 import SignupForm from '@/components/SignupForm';  // Adjust the path accordingly
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Link from "next/link";
+import Footer from "@/components/Footer";
 
 export default function Signup() {
     const router = useRouter();
@@ -27,6 +28,7 @@ export default function Signup() {
             <div className={"lg:w-1/3 lg:px-12 rounded flex flex-col bg-darkergold p-8 w-full"}>
                 <SignupForm />
             </div>
+            <Footer/>
         </main>
     );
 }

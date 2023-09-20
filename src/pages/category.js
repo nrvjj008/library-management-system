@@ -1,10 +1,11 @@
 // pages/category.tsx
 
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import Link from 'next/link';
 import api from "@/axiosHandler";
 import NavBar from "@/components/NavBar";
+import Footer from "@/components/Footer";
 
 export default function CategoryPage({ category }) {
     const [books, setBooks] = useState([]);
@@ -55,6 +56,7 @@ export default function CategoryPage({ category }) {
                     </button>
                 )}
             </div>
+            <Footer/>
         </div>
     );
 }

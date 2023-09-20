@@ -25,6 +25,7 @@ import FlipBook from "@/components/FlipBook";
 import HTMLFlipBook from "react-pageflip";
 import {Page} from "react-pdf";
 import InfiniteScroll from "react-infinite-scroll-component";
+import Footer from "@/components/Footer";
 
 
 function BookDetail() {
@@ -138,6 +139,7 @@ function BookDetail() {
     const handleReviewClick = () => {
 
         setShowReview(!showReview);
+
     };
     const handleSaveNote = () => {
         if (bookId) {
@@ -162,6 +164,7 @@ function BookDetail() {
             }).then(response => {
                 setReviewAdded(true);
                 console.log('Note saved successfully!', response.data);
+                window.location.reload();
             }).catch(error => {
                 console.error('Failed to save note:', error);
             });
@@ -272,7 +275,8 @@ function BookDetail() {
     ShowBook.displayName = 'ShowBook';
 
     return (
-        <div className={"bg-gold min-h-screen w-full text-slate-700 px-8 "}>
+        <div className={"bg-gold text-black"}>
+        <div className={" min-h-screen w-full text-slate-700 px-8 "}>
             <NavBar/>
             {showModal && (
                 <div className={`h-screen ${isFullScreen ? "bg-black" : "bg-black/80"} backdrop-blur fixed inset-0 w-full z-50 flex flex-col`}>
@@ -304,7 +308,9 @@ function BookDetail() {
                                                     className={`mx-auto object-contain ${isFullScreen ? "w-11/12" : "w-1/3"} mt-4`}
                                                 />
                                             ))}
-                                            <div ref={ref} className="mb-4">Loading more...</div>
+                                            <div className={"flex justify-center"}>
+                                            <button onClick={fetchPages} className="mt-4 p-2 bg-blue-500 text-white rounded ">Load More</button>
+                                            </div>
                                         </div>
 
 
@@ -316,8 +322,8 @@ function BookDetail() {
 
                     <div className="flex justify-center space-x-4 p-4 bg-darkergold">
                         <button className={"p-2 px-3 py-2 bg-gold shadow-2xl rounded-full"} onClick={() => setIsFullScreen(!isFullScreen)}>{isFullScreen ? "Exit Full Screen" : "Go Full Screen"}</button>
-                        <button className={"p-2 px-3 py-2 bg-gold shadow-2xl rounded-full hidden lg:block"} onClick={()=>setIsTwoPage(true)}>2 Page</button>
-                        <button className={"p-2 px-3 py-2 bg-gold shadow-2xl rounded-full hidden lg:block"} onClick={()=>setIsTwoPage(false)}>1 Page Scroll</button>
+                        <button className={"p-2 px-3 py-2 bg-gold shadow-2xl rounded-full hidden lg:block"} onClick={()=>setIsTwoPage(true)}>2 Page View</button>
+                        <button className={"p-2 px-3 py-2 bg-gold shadow-2xl rounded-full hidden lg:block"} onClick={()=>setIsTwoPage(false)}>1 Page View</button>
                     </div>
                 </div>
             )}
@@ -325,7 +331,7 @@ function BookDetail() {
 
 
             <div className="flex flex-col lg:flex-row bg-white/50 h-full p-2">
-                <div className=" p-2 flex flex-col items-center border border-slate-400 rounded w-full lg:w-[300px]">
+                <div className="flex-shrink-0 p-2 flex flex-col items-center border border-slate-400 rounded w-full lg:w-[300px]">
                     <img src={book.cover_image} alt={book.title} className={"w-[200px] h-[300px] object-cover hover:scale-95 transition-all duration-200 shadow-2xl"}/>
                     <button className=" hover:bg-blue-700 mt-4 bg-blue-950 w-full text-white py-2 px-4 rounded" onClick={()=>{setShowModal(true)}}>Read Now</button>
                    <div className={"flex items-center justify-center space-x-4 w-full"}>
@@ -409,7 +415,10 @@ function BookDetail() {
                     </div>
                 </div>
             </div>
+
         </div>
+    <Footer/>
+    </div>
     );
 }
 

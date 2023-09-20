@@ -1,8 +1,9 @@
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import NavBar from "@/components/NavBar";
 import { useRouter } from "next/router";
 import api from "@/axiosHandler";
+import Footer from "@/components/Footer";
 
 export default function SearchPage() {
     const [books, setBooks] = useState([]);
@@ -60,6 +61,7 @@ export default function SearchPage() {
                     <p className="text-center mt-10 text-xl">No books found for your search criteria.</p>
                 )}
             </div>
+            <Footer/>
         </div>
     );
 }

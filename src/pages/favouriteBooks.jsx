@@ -1,9 +1,10 @@
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import api, {getAccessToken} from "@/axiosHandler";
 import NavBar from "@/components/NavBar";
 import { useRouter } from "next/router";
+import Footer from "@/components/Footer";
 
 export default function CategoryPage() {
     const [books, setBooks] = useState([]);
@@ -69,6 +70,7 @@ export default function CategoryPage() {
                     <p className="text-center mt-10 text-xl">No books available in this category.</p>
                 )}
             </div>
+            <Footer/>
         </div>
     );
 }

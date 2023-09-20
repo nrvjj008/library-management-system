@@ -3,7 +3,8 @@ import { Inter } from 'next/font/google'
 import LoginForm from "@/components/LoginForm";
 import Link from "next/link";
 import {useRouter} from "next/router";
-import {useEffect} from "react";
+import React, {useEffect} from "react";
+import Footer from "@/components/Footer";
 
 
 export default function Home() {
@@ -31,7 +32,7 @@ export default function Home() {
 
             <LoginForm />
             </div>
-
+            <Footer/>
         </main>
     )
 }

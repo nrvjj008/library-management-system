@@ -10,6 +10,7 @@ export default function LoginForm() {
     const router = useRouter();
 
     const handleSubmit = async (e) => {
+        console.log("handleSubmit");
         e.preventDefault();
 
         try {

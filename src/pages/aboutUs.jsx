@@ -3,6 +3,7 @@ import {Inter, Noto_Sans_Arabic} from 'next/font/google'
 import LoginForm from "@/components/LoginForm";
 import Link from "next/link";
 import React from "react";
+import Footer from "@/components/Footer";
 const inter = Noto_Sans_Arabic({ subsets: ['arabic'] })
 
 export default function Home() {
@@ -42,7 +43,7 @@ export default function Home() {
                 </div>
                 </div>
             </div>
-
+            <Footer/>
         </main>
     )
 }

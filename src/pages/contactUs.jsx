@@ -7,6 +7,7 @@ import NavBar from "@/components/NavBar";
 import axios from "axios";
 import api from "@/axiosHandler";
 import {useRouter} from "next/router";
+import Footer from "@/components/Footer";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -82,6 +83,7 @@ const inter = Inter({ subsets: ['latin'] })
                 <button className="bg-black/50 text-white px-10 py-2 w-fit" dir={"rtl"} onClick={handleSubmit}>أرسل</button>
             </div>
         </main>
+            <Footer/>
         </div>
     );
 }
