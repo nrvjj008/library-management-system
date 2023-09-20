@@ -7,7 +7,7 @@ export default function Footer() {
     const currentYear = new Date().getFullYear();
 
     return (
-        <div className="flex items-center justify-center space-x-2 px-4">
+        <div className="flex items-center justify-center space-x-2 px-4 bg-gold rounded-full mt-4">
             © {currentYear} Nasaq Library All rights reserved.
 
             <Link href="https://instagram.com/nasaq_library?igshid=NGVhN2U2NjQ0Yg==">
