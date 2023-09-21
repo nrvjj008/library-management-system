@@ -26,6 +26,7 @@ export default function Home() {
         <div className={"flex flex-wrap space-x-2"}>
           <Link href={"/login"} ><button className={" bg-gold border border-black  rounded py-2 px-4 hover:bg-black/20 hover:shadow-2xl"}>Log In</button></Link>
           <Link href={"/signUp"} ><button className={" bg-gold border border-black rounded py-2  px-4 hover:bg-black/20 hover:shadow-2xl"}>Sign Up</button></Link>
+          {/*<Link href={"/ForgotPassword"} ><button className={" bg-gold border border-black rounded py-2  px-4 hover:bg-black/20 hover:shadow-2xl"}>Forgot Password?</button></Link>*/}
 
         </div>
       </div>

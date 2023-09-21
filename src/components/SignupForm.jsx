@@ -14,7 +14,9 @@ export default function SignupForm() {
             password: '',
         },
         validationSchema: Yup.object({
-            username: Yup.string().required('Required'),
+            username: Yup.string()
+                .required('Required')
+                .matches(/^\S*$/, 'No spaces are allowed.'),
             email: Yup.string().required('Required').email('Invalid email format'),
             name: Yup.string().required('Required'),
             reason: Yup.string().required('Required'),
@@ -27,7 +29,7 @@ export default function SignupForm() {
                 resetForm();
             } catch (error) {
                 console.error(error);
-                setMessage(error.message);
+                setMessage(error.username);
 
             }
             setSubmitting(false);
@@ -43,6 +45,8 @@ export default function SignupForm() {
                 {...formik.getFieldProps('username')}
                 className="placeholder:text-black p-2 border bg-gold text-slate-700 border-slate-400 rounded"
             />
+            {formik.touched.username && formik.errors.username ? <div className="text-red-500">{formik.errors.username}</div> : null}
+
             <input
                 name="email"
                 type="email"

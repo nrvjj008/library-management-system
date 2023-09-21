@@ -36,11 +36,11 @@ export default function LoginForm() {
                 <label htmlFor="email" className="font-semibold">Username:</label>
                 <input
                     id="email"
-                    className={"px-4 py-2 border border-slate-500 rounded w-full bg-gold text-slate-800 min-w-[300px]"}
+                    className={"px-4 py-2 border border-slate-500 rounded w-full bg-gold text-slate-800 lg:min-w-[300px]"}
                     type="text"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                    placeholder="Enter your email"
+                    placeholder="Enter your username"
                 />
             </div>
 
@@ -48,7 +48,7 @@ export default function LoginForm() {
                 <label htmlFor="password" className="font-semibold">Password:</label>
                 <input
                     id="password"
-                    className={"px-4 py-2 border border-slate-500 rounded w-full bg-gold text-slate-800 min-w-[300px]"}
+                    className={"px-4 py-2 border border-slate-500 rounded w-full bg-gold text-slate-800 lg:min-w-[300px]"}
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
