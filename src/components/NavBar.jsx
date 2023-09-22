@@ -57,7 +57,7 @@ export default function NavBar({ onSearch, onCategoryChange }) {
             <div className="hidden md:block">
         <nav className="flex  justify-between items-center px-4 shadow-sm">
             <div className="flex items-center">
-                <img src="/logo.png" alt="logo"  className="w-[150px] h-[100px] py-4 object-cover mix-blend-multiply mr-2" />
+                <img src="/logo.png" alt="logo"  className="w-[150px] h-[100px] py-4 object-contain mix-blend-multiply mr-2" />
             </div>
             <ul className="flex space-x-12 font-bold items-center">
                 {/* ... other nav links ... */}
@@ -136,7 +136,7 @@ export default function NavBar({ onSearch, onCategoryChange }) {
             </div>
             <div className="md:hidden">
                 <nav className="flex justify-between items-center px-4 shadow-sm">
-                    <img src="/logo.png" alt="logo"  className="w-[150px] h-[100px] py-4 object-cover mix-blend-multiply mr-2" />
+                    <img src="/logo.png" alt="logo"  className="w-[150px] h-[100px] py-4 object-contain mix-blend-multiply mr-2" />
 
                     <button className="p-2" onClick={() => setMobileNavVisible(!isMobileNavVisible)}> {/* Toggle mobile nav visibility */}
                         <FaBars size="1.5em" />
