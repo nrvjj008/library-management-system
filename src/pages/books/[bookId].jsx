@@ -20,7 +20,7 @@ import {
     FaRegStar,
     FaWindowClose, FaUserAlt
 } from 'react-icons/fa';
-import {FaHeading, FaHeart, FaX, FaXing} from "react-icons/fa6";
+import {FaExpand, FaHeading, FaHeart, FaX, FaXing} from "react-icons/fa6";
 import FlipBook from "@/components/FlipBook";
 import HTMLFlipBook from "react-pageflip";
 import {Page} from "react-pdf";
@@ -114,10 +114,8 @@ function BookDetail() {
 
         // Scroll to the last loaded image after fetching new pages
         const lastImage = document.getElementById('last-loaded-image');
-        console.log(bookPages.length);
-        if (lastImage && bookPages.length > 20) {
-            lastImage.scrollIntoView({ behavior: 'instant' });
-        }
+           lastImage?.scrollIntoView({ behavior: 'auto' });
+
     }, [bookPages]);
 
     useEffect(() => {
@@ -164,7 +162,9 @@ function BookDetail() {
             }).then(response => {
                 setReviewAdded(true);
                 console.log('Note saved successfully!', response.data);
-                window.location.reload();
+                // if (typeof window !== 'undefined') {
+                //     window.location.reload();
+                // }
             }).catch(error => {
                 console.error('Failed to save note:', error);
             });
@@ -281,6 +281,7 @@ function BookDetail() {
             {showModal && (
                 <div className={`h-screen ${isFullScreen ? "bg-black" : "bg-black/80"} backdrop-blur fixed inset-0 w-full z-50 flex flex-col`}>
                     <button className={"absolute top-4 right-2 p-2 px-2 py-2 bg-gold rounded-full z-50"} onClick={()=>setShowModal(false)}><FaX/></button>
+                    <button className={"lg:hidden absolute top-14 right-2 p-2 px-2 py-2 bg-gold rounded-full z-50"} onClick={() => setIsFullScreen(!isFullScreen)}><FaExpand/></button>
 
                     {isLoading ? (
                         <div className="flex-1 h-screen flex justify-center items-center">
@@ -320,7 +321,7 @@ function BookDetail() {
                         </div>
                     )}
 
-                    <div className="flex justify-center space-x-4 p-4 bg-darkergold">
+                    <div className="hidden lg:flex justify-center space-x-4 p-4 bg-darkergold">
                         <button className={"p-2 px-3 py-2 bg-gold shadow-2xl rounded-full"} onClick={() => setIsFullScreen(!isFullScreen)}>{isFullScreen ? "Exit Full Screen" : "Go Full Screen"}</button>
                         <button className={"p-2 px-3 py-2 bg-gold shadow-2xl rounded-full hidden lg:block"} onClick={()=>setIsTwoPage(true)}>2 Page View</button>
                         <button className={"p-2 px-3 py-2 bg-gold shadow-2xl rounded-full hidden lg:block"} onClick={()=>setIsTwoPage(false)}>1 Page View</button>

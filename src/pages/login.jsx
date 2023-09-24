@@ -39,6 +39,7 @@ export default function Home() {
             <div className={" px-12 rounded flex flex-col bg-darkergold   p-8"}>
 
             <LoginForm />
+                <Link href={"/ForgotPassword"} className={"mx-auto py-4 underline"}>Forgot Password?</Link>
             </div>
             <Footer/>
         </main>

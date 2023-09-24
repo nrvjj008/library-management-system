@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+
 // authUtility.ts
 export const getAccessToken = () => {
     return typeof window !== "undefined" ? localStorage.getItem('access_token') : null;
@@ -12,6 +13,7 @@ const api = axios.create({
         'Content-Type': 'application/json',
     }
 });
+
 
 // Interceptor to add the token to requests
 api.interceptors.request.use(config => {
@@ -50,9 +52,9 @@ api.interceptors.response.use((response) => {
             localStorage.removeItem('access_token');
             localStorage.removeItem('refresh_token');
 
-            if (typeof window !== "undefined") {
-                window.location.href = '/login';
-            }
+            // if (typeof window !== "undefined") {
+            //     window.location.href = '/login';
+            // }
 
             return Promise.reject(error);
         }

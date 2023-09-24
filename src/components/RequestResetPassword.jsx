@@ -1,8 +1,11 @@
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import api from '../axiosHandler';
+import {useRouter} from "next/router";
+
 
 export default function RequestResetPassword() {
+    const router = useRouter();
     const formik = useFormik({
         initialValues: {
             email: ''
@@ -14,6 +17,8 @@ export default function RequestResetPassword() {
             try {
                 await api.post('/request-password-reset/', values);
                 alert('A code has been sent to your email');
+                router.push('/resetPassword');
+
             } catch (error) {
                 console.error(error);
             }
@@ -22,15 +27,23 @@ export default function RequestResetPassword() {
     });
 
     return (
-        <form onSubmit={formik.handleSubmit}>
+        <>
+        <form onSubmit={formik.handleSubmit} className="space-y-4 flex flex-col w-full">
+            <label htmlFor="email" className="text-black">Email</label>
             <input
                 name="email"
                 type="email"
-                placeholder="Email"
+                placeholder="Enter your email"
                 {...formik.getFieldProps('email')}
+                className="placeholder:text-black p-2 border bg-gold text-slate-700 border-slate-400 rounded"
             />
-            {formik.touched.email && formik.errors.email ? <div>{formik.errors.email}</div> : null}
-            <button type="submit">Send Code</button>
+            {formik.touched.email && formik.errors.email ? <div className="text-red-500">{formik.errors.email}</div> : null}
+
+            <button type="submit" className="bg-blue-950 text-white w-full py-2 px-4 rounded">
+                Send Code
+            </button>
         </form>
+
+            </>
     );
 }

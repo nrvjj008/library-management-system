@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import Image from "next/image";
-import RequestResetPassword from "@/components/RequestResetPassword";
+import VerifyResetPassword from "@/components/VerifyPassword";
 
 
 export default function ResetPasswordPage() {
@@ -33,11 +33,11 @@ export default function ResetPasswordPage() {
 
                 </div>
             </div>
-
             <div className={" px-12 rounded flex flex-col bg-darkergold   p-8"}>
 
                 <div>
-                    <RequestResetPassword/>
+
+                    <VerifyResetPassword/>
                 </div>
             </div>
             <Footer/>
