@@ -2,9 +2,11 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import api from '../axiosHandler';
 import {useRouter} from "next/router";
+import {useState} from "react";
 
 
 export default function RequestResetPassword() {
+    const [message,setMesssage] = useState('');
     const router = useRouter();
     const formik = useFormik({
         initialValues: {
@@ -21,6 +23,7 @@ export default function RequestResetPassword() {
 
             } catch (error) {
                 console.error(error);
+                setMesssage(error.detail);
             }
             setSubmitting(false);
         }
@@ -42,6 +45,7 @@ export default function RequestResetPassword() {
             <button type="submit" className="bg-blue-950 text-white w-full py-2 px-4 rounded">
                 Send Code
             </button>
+            <div className="text-red-500 mx-auto">{message}</div>
         </form>
 
             </>
