@@ -51,10 +51,8 @@ api.interceptors.response.use((response) => {
             // If refresh token has failed, clear local storage and redirect the user to the login page
             localStorage.removeItem('access_token');
             localStorage.removeItem('refresh_token');
+            window.location.href = '/login';
 
-            // if (typeof window !== "undefined") {
-            //     window.location.href = '/login';
-            // }
 
             return Promise.reject(error);
         }
