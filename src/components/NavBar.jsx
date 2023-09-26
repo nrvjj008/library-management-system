@@ -55,11 +55,11 @@ export default function NavBar({ onSearch, onCategoryChange }) {
     return (
         <div className={"text-sm md:text-md lg:text-lg"}>
             <div className="hidden lg:block ">
-        <nav className="flex  justify-between items-center px-4 shadow-sm flex-wrap lg:px-4">
+        <nav className="flex  justify-between items-center px-4 shadow-sm  lg:px-4">
             <div className="flex items-center flex-shrink-0 pr-4">
                 <img src="/logo.png" alt="logo"  className="w-[150px] h-[100px] py-4 object-contain mix-blend-multiply mr-2" />
             </div>
-            <ul className="flex space-x-12 font-bold items-center">
+            <ul className="flex space-x-4 xl:space-x-12 font-bold items-center">
                 {/* ... other nav links ... */}
                 <li>
                     <Link href="/home">Home</Link>
@@ -114,7 +114,7 @@ export default function NavBar({ onSearch, onCategoryChange }) {
                 <select
                     value={searchType}
                     onChange={(e) => setSearchType(e.target.value)}
-                    className="border-r border-slate-500  p-2 bg-gold"
+                    className="border-r border-slate-500 bg-gold text-sm w-16 p-0 "
                 >
                     <option value="book">Book</option>
                     <option value="author">Author</option>
@@ -124,17 +124,17 @@ export default function NavBar({ onSearch, onCategoryChange }) {
                 <input
                     type="text"
                     placeholder="Search..."
-                    className="placeholder:text-black p-2 bg-gold "
+                    className="placeholder:text-black  bg-gold "
                     value={searchText}
                     onChange={(e) => setSearchText(e.target.value)}
                 />
-                <button className=" border rounded  p-2 flex justify-center items-center" onClick={handleSearch}>
-                    <FaSearch className={"border-l border-slate-500 pl-2"} size={"1.5em"}/>
+                <button className=" border rounded   flex justify-center items-center" onClick={handleSearch}>
+                    <FaSearch className={"border-l border-slate-500 px-1"} size={"1.5em"}/>
                 </button>
             </div>
         </nav>
             </div>
-            <div className="lg:hidden px-4">
+            <div className="lg:hidden px-8">
                 <nav className="flex justify-between items-center px-4 shadow-sm">
                     <img src="/logo.png" alt="logo"  className="w-[150px] h-[100px] py-4 object-contain mix-blend-multiply mr-2" />
 
