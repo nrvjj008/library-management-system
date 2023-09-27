@@ -83,7 +83,7 @@ function BookDetail() {
         const updateDimensions = () => {
             if (isFullScreen) {
                 setHeight(window.innerHeight*0.85);
-                setWidth(window.innerWidth*0.4);
+                setWidth(window.innerWidth*0.5);
                 console.log(window.innerWidth,window.innerHeight);
             } else {
                 setHeight(500); // default height
@@ -268,7 +268,7 @@ function BookDetail() {
             className="shadow-2xl my-auto mx-auto w-full"
         >
             {images.map((image, index) => (
-                <img className="w-1/2" key={index} src={image} alt={`Page ${index + 1}`} style={{ objectFit: 'cover' }} />
+                <img className="w-[45vw]" key={index} src={image} alt={`Page ${index + 1}`} style={{ objectFit: 'cover' }} />
             ))}
         </HTMLFlipBook>
     ));
@@ -290,7 +290,7 @@ function BookDetail() {
                     ) : (
                         <div className="flex-1 flex justify-center items-center overflow-y-hidden relative h-full w-full mx-auto my-auto ">
                             <div className={`w-full flex justify-center items-center relative  ${isFullScreen ? "h-screen w-full" : "w-4/5 mx-auto"}`} >
-                                <div className={"w-full "}>
+                                <div className={"w-[100vw] overflow-auto"}>
                                     {isTwoPage ? (
                                         <>
                                             {/* Other components and notifications for the two-page view. */}
