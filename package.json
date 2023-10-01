@@ -28,6 +28,7 @@
     "react-modal": "^3.16.1",
     "react-pageflip": "^2.0.3",
     "react-pdf": "^7.3.3",
+    "sharp": "^0.32.6",
     "tailwindcss": "3.3.3",
     "yup": "^1.2.0"
   }

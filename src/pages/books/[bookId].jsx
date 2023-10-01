@@ -78,17 +78,35 @@ function BookDetail() {
     }, []);
 
 
-
+    const ASPECT_RATIO = 3/4;  // Combined width of two pages to their height.
     useEffect(() => {
         const updateDimensions = () => {
+            let newWidth, newHeight;
+
             if (isFullScreen) {
-                setHeight(window.innerHeight*0.85);
-                setWidth(window.innerWidth*0.5);
-                console.log(window.innerWidth,window.innerHeight);
+                // For screens that are more "landscape" (like 16:9 laptop screens)
+                console.log(window.innerWidth,window.innerHeight)
+                if (window.innerWidth > window.innerHeight) {
+                    newHeight = window.innerHeight * 0.85;
+                    newWidth = newHeight * ASPECT_RATIO;
+                    console.log("......")
+                    console.log(newWidth,newHeight)
+                }
+                // For screens that are more "portrait" or square
+                else {
+                    newWidth = window.innerWidth * 0.85;  // Changed from 0.5 to 0.85 to fill more width in portrait mode.
+                    newHeight = newWidth / ASPECT_RATIO;
+                    console.log("-----asasasa---a-sa-sa-s-a-sa-")
+                    console.log(newWidth,newHeight)
+                }
             } else {
-                setHeight(500); // default height
-                setWidth(300);  // default width
+                newWidth = 300;  // default width
+                newHeight = newWidth / ASPECT_RATIO; // Compute height based on width to maintain aspect ratio
             }
+
+            setWidth(newWidth);
+            setHeight(newHeight);
+            console.log(newWidth, newHeight)
         };
 
         // Call immediately to set initial values
@@ -105,18 +123,44 @@ function BookDetail() {
             window.removeEventListener('resize', handleResize);
         };
     }, [isFullScreen]);
-
-    const isFirstLoad = useRef(true);
-
-    useEffect(() => {
-        // Don't scroll if it's the first load
-
-
-        // Scroll to the last loaded image after fetching new pages
-        const lastImage = document.getElementById('last-loaded-image');
-           lastImage?.scrollIntoView({ behavior: 'auto' });
-
-    }, [bookPages]);
+    // useEffect(() => {
+    //     const updateDimensions = () => {
+    //         if (isFullScreen) {
+    //             setHeight(window.innerHeight*0.85);
+    //             setWidth(window.innerWidth*0.5);
+    //             console.log(window.innerWidth,window.innerHeight);
+    //         } else {
+    //             setHeight(500); // default height
+    //             setWidth(300);  // default width
+    //         }
+    //     };
+    //
+    //     // Call immediately to set initial values
+    //     updateDimensions();
+    //
+    //     // Optional: Update dimensions upon window resize
+    //     const handleResize = () => {
+    //         updateDimensions();
+    //     };
+    //     window.addEventListener('resize', handleResize);
+    //
+    //     return () => {
+    //         // Cleanup event listener on component unmount
+    //         window.removeEventListener('resize', handleResize);
+    //     };
+    // }, [isFullScreen]);
+    //
+    // const isFirstLoad = useRef(true);
+    //
+    // useEffect(() => {
+    //     // Don't scroll if it's the first load
+    //
+    //
+    //     // Scroll to the last loaded image after fetching new pages
+    //     const lastImage = document.getElementById('last-loaded-image');
+    //        lastImage?.scrollIntoView({ behavior: 'auto' });
+    //
+    // }, [bookPages]);
 
     useEffect(() => {
         if (bookId) {
@@ -192,6 +236,7 @@ function BookDetail() {
             const startPage = lastFetchedPageRef.current + 1;
             const response = await api.get(`/book-pages/${bookId}/`, { params: { current_page: startPage } });
             const data = response.data;
+            console.log(data)
 
             setBookPages(prevBookPages => [...prevBookPages, ...data.page_images]);
 
@@ -256,19 +301,23 @@ function BookDetail() {
 
 
     const ShowBook = React.memo(({ images, width, height }) => (
+
         <HTMLFlipBook
             key={images.length}
-            autoSize={true}
             showPageCorners={true}
-            size="fixed"
+            size="stretch"
+            minWidth={300}
+            minHeight={400}
+            maxHeight={800}
+            maxWidth={750}
             width={width}
             height={height}
             onFlip={handlePageChange}
             startPage={currentPage}
-            className="shadow-2xl my-auto mx-auto w-full"
+            className="shadow-2xl my-auto mx-auto w-full h-full"
         >
             {images.map((image, index) => (
-                <img className="w-[45vw]" key={index} src={image} alt={`Page ${index + 1}`} style={{ objectFit: 'cover' }} />
+                <img className="w-1/2" key={index} src={image} alt={`Page ${index + 1}`} style={{ objectFit: 'contain' }} />
             ))}
         </HTMLFlipBook>
     ));
@@ -288,15 +337,15 @@ function BookDetail() {
                             <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-white"></div>
                         </div>
                     ) : (
-                        <div className="flex-1 flex justify-center items-center overflow-y-hidden relative h-full w-full mx-auto my-auto ">
-                            <div className={`w-full flex justify-center items-center relative  ${isFullScreen ? "h-screen w-full" : "w-4/5 mx-auto"}`} >
-                                <div className={"w-[100vw] overflow-auto"}>
+                        <div className="flex-1 flex justify-center items-center  relative h-full w-full mx-auto my-auto ">
+                            <div className={`w-full flex justify-center items-center relative  ${isFullScreen ? "h-screen w-screen" : "w-4/5 mx-auto"}`} >
+                                <div className={"w-full  "}>
                                     {isTwoPage ? (
-                                        <>
+                                        <div className={`${isFullScreen?"w-11/12 h-[90vh] my-auto mx-auto ":"w-[600px] h-[400px] mx-auto"}`}>
                                             {/* Other components and notifications for the two-page view. */}
                                             <ShowBook images={bookPages} width={width} height={height} />
                                             {/*{isEndOfBook && <div className="notification">You have reached the end of the book!</div>}*/}
-                                        </>
+                                        </div>
                                     ) : (
 
                                         <div className="h-[90vh] overflow-y-scroll">
@@ -321,10 +370,10 @@ function BookDetail() {
                         </div>
                     )}
 
-                    <div className="hidden lg:flex justify-center space-x-4 p-4 bg-darkergold">
-                        <button className={"p-2 px-3 py-2 bg-gold shadow-2xl rounded-full"} onClick={() => setIsFullScreen(!isFullScreen)}>{isFullScreen ? "Exit Full Screen" : "Go Full Screen"}</button>
-                        <button className={"p-2 px-3 py-2 bg-gold shadow-2xl rounded-full hidden lg:block"} onClick={()=>setIsTwoPage(true)}>2 Page View</button>
-                        <button className={"p-2 px-3 py-2 bg-gold shadow-2xl rounded-full hidden lg:block"} onClick={()=>setIsTwoPage(false)}>1 Page View</button>
+                    <div className="hidden lg:flex h-[50px] justify-center space-x-4 p-2 bg-transparent z-50 absolute bottom-0 w-full left-1/2 -translate-x-1/2">
+                        <button className={"px-3 py-1 bg-gold shadow-2xl rounded-full"} onClick={() => setIsFullScreen(!isFullScreen)}>{isFullScreen ? "Exit Full Screen" : "Go Full Screen"}</button>
+                        <button className={"px-3 py-1 bg-gold shadow-2xl rounded-full hidden lg:block"} onClick={()=>setIsTwoPage(true)}>2 Page View</button>
+                        <button className={"px-3 py-1 bg-gold shadow-2xl rounded-full hidden lg:block"} onClick={()=>setIsTwoPage(false)}>1 Page View</button>
                     </div>
                 </div>
             )}
