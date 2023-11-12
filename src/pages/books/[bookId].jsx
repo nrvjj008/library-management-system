@@ -57,11 +57,18 @@ function BookDetail() {
     const [isEndOfBook, setIsEndOfBook] = useState(false);
     const [reviewAdded, setReviewAdded] = useState(false);
     const [notesAdded, setNotesAdded] = useState(false);
-
+    const lastBookPageRef = useRef(null);
     const [pagesFetched, setPagesFetched] = useState(false);
+    const newImagesStartRef = useRef(null);
 
 
     const [isTwoPage, setIsTwoPage] = useState(false);
+
+    useEffect(() => {
+        if (lastBookPageRef.current) {
+            lastBookPageRef.current.scrollIntoView({ behavior: 'instant' });
+        }
+    }, [bookPages]);
 
     useEffect(() => {
         // Handle window resize events
@@ -74,6 +81,18 @@ function BookDetail() {
         return () => {
             // Cleanup the event listener when the component unmounts
             window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
+    useEffect(() => {
+        const handleRightClick = (event) => {
+            event.preventDefault();
+        };
+
+        document.addEventListener('contextmenu', handleRightClick);
+
+        return () => {
+            document.removeEventListener('contextmenu', handleRightClick);
         };
     }, []);
 
@@ -161,17 +180,7 @@ function BookDetail() {
     //        lastImage?.scrollIntoView({ behavior: 'auto' });
     //
     // }, [bookPages]);
-    const scrollRef = useRef(null);
 
-    const saveScrollPosition = () => {
-        if (scrollRef.current) {
-            scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-        }
-    };
-
-    useEffect(() => {
-        saveScrollPosition();
-    }, [bookPages]);
     useEffect(() => {
         if (bookId) {
             api.get(`/books/${bookId}/`).then(response => {
@@ -183,6 +192,18 @@ function BookDetail() {
             });
         }
     }, [bookId]);
+
+    useEffect(() => {
+        if (newImagesStartRef.current !== null && bookPages.length > 0) {
+            // This gets the first new image element
+            const newStartElement = document.getElementById(`page-${newImagesStartRef.current}`);
+            if (newStartElement) {
+                newStartElement.scrollIntoView({ behavior: 'smooth' });
+            }
+            newImagesStartRef.current = null; // Reset the ref for the next fetch
+        }
+    }, [bookPages]);
+
 
     const handleNotesClick = () => {
 
@@ -246,13 +267,13 @@ function BookDetail() {
             const startPage = lastFetchedPageRef.current + 1;
             const response = await api.get(`/book-pages/${bookId}/`, { params: { current_page: startPage } });
             const data = response.data;
-            console.log(data)
+
+            // If there are new pages, set the ref to the first new image element
+            if (data.page_images.length > 0) {
+                newImagesStartRef.current = bookPages.length; // The index of the first new image
+            }
 
             setBookPages(prevBookPages => [...prevBookPages, ...data.page_images]);
-
-            if (data.page_images.length < 10) {
-                setIsEndOfBook(true);
-            }
 
             lastFetchedPageRef.current += data.page_images.length; // Update last fetched page ref
         } catch (error) {
@@ -261,6 +282,7 @@ function BookDetail() {
             setIsLoading(false);
         }
     };
+
 
     const [ref, inView] = useInView({
         threshold: 0,
@@ -358,37 +380,23 @@ function BookDetail() {
                                         </div>
                                     ) : (
 
-                                        //     {bookPages.map((page, index) => (
-                                        //         <img
-                                        //             key={page}
-                                        //             src={page}
-                                        //             alt={`Page ${index + 1}`}
-                                        //             id={index === bookPages.length - 1 ? 'last-loaded-image' : ''} // Add id only to the last image
-                                        //             className={`mx-auto object-contain ${isFullScreen ? "w-11/12" : "w-1/3"} mt-4`}
-                                        //         />
-                                        //     ))}
-                                        //     <div className={"flex justify-center"}>
-                                        //     <button onClick={fetchPages} className="mt-4 p-2 bg-blue-500 text-white rounded ">Load More</button>
-                                        //     </div>
-                                        // </div>
-                                        <div ref={scrollRef} className="h-[90vh] overflow-y-scroll">
-                                        <InfiniteScroll
-                                            dataLength={bookPages.length}
-                                            next={fetchPages}
-                                            hasMore={!isEndOfBook}
-                                            loader={<h4>Loading...</h4>}
-                                            endMessage={<p>End of Book</p>}
-                                        >
+                                        <div className="h-[90vh] overflow-y-scroll">
                                             {bookPages.map((page, index) => (
                                                 <img
-                                                    key={index}
+                                                    key={page}
                                                     src={page}
                                                     alt={`Page ${index + 1}`}
+                                                    id={`page-${index}`} // Assign an ID based on the index
                                                     className={`mx-auto object-contain ${isFullScreen ? "w-11/12" : "w-1/3"} mt-4`}
                                                 />
                                             ))}
-                                        </InfiniteScroll>
+                                            <div className={"flex justify-center"}>
+                                                <button onClick={fetchPages} className="mt-4 p-2 bg-blue-500 text-white rounded ">
+                                                    {isLoading ? 'Loading...' : 'Load More'}
+                                                </button>
+                                            </div>
                                         </div>
+
 
 
                                     )}
