@@ -16,7 +16,7 @@ export default function NavBar({ onSearch, onCategoryChange }) {
     const [isDropdownVisible, setDropdownVisible] = useState(false);
     const [isUserDropdownVisible, setUserDropdownVisible] = useState(false);
     const [searchType, setSearchType] = useState('book');  // Default to 'book'
-
+    const [isNasaqDropdownVisible, setNasaqDropdownVisible] = useState(false);
     const router = useRouter();
     useEffect(() => {
             api.get(`/categories/`).then(response => {
@@ -53,7 +53,7 @@ export default function NavBar({ onSearch, onCategoryChange }) {
 
     const [isMobileNavVisible, setMobileNavVisible] = useState(false);
     return (
-        <div className={"text-sm md:text-md lg:text-lg"}>
+        <div className={"text-sm lg:text-lg"}>
             <div className="hidden lg:block ">
         <nav className="flex  justify-between items-center px-4 shadow-sm  lg:px-4">
             <div className="flex items-center flex-shrink-0 pr-4">
@@ -61,6 +61,32 @@ export default function NavBar({ onSearch, onCategoryChange }) {
             </div>
             <ul className="flex space-x-4 xl:space-x-12 font-bold items-center">
                 {/* ... other nav links ... */}
+                <li className="relative">
+                    <button
+                        onMouseEnter={() => setNasaqDropdownVisible(true)}
+                        onMouseLeave={() => setNasaqDropdownVisible(false)}
+                        className={"flex items-center justify-center space-x-1"}
+                    >
+                        <span>NASAQ</span>
+                        <FaAngleDown size={"1rem"} className={"font-bold"}/>
+                    </button>
+                    {isNasaqDropdownVisible && (
+                        <ul className="absolute top-full mt-0 z-10 w-[300px] bg-white border border-gray-300 rounded shadow-lg"
+                            onMouseEnter={() => setNasaqDropdownVisible(true)}
+                            onMouseLeave={() => setNasaqDropdownVisible(false)}
+                        >
+                            <li className="px-4 py-2 hover:bg-gray-200">
+                                <Link href="/aboutUs">About Us</Link>
+                            </li>
+                            <li className="px-4 py-2 hover:bg-gray-200">
+                                <Link href="/AdvisoryCommity">Advisory Committee</Link>
+                            </li>
+                            {/*<li className="px-4 py-2 hover:bg-gray-200">*/}
+                            {/*    <Link href="/newsLetter">Newsletter</Link>*/}
+                            {/*</li>*/}
+                        </ul>
+                    )}
+                </li>
                 <li>
                     <Link href="/home">Home</Link>
                 </li>
@@ -97,7 +123,7 @@ export default function NavBar({ onSearch, onCategoryChange }) {
                 {/* ... other nav links ... */}
 
                 <li>
-                    <Link href="/favouriteBooks">Favourite Books</Link>
+                    <Link href="/favouriteBooks">Favourites</Link>
                 </li>
                 {/*<li>*/}
                 {/*    <Link href="/research">Research & Studies</Link>*/}
@@ -144,6 +170,22 @@ export default function NavBar({ onSearch, onCategoryChange }) {
                 </nav>
                 {isMobileNavVisible && (
                 <div className="flex flex-col mt-4 space-y-4">
+                          <button
+                                onClick={() => setNasaqDropdownVisible(!isNasaqDropdownVisible)}
+                                className="flex items-center  w-full"
+                            >
+                                NASAQ <FaAngleDown />
+                            </button>
+
+                                <div className="flex flex-col pl-4 space-y-2">
+                                    <Link href="/aboutUs">About Us</Link>
+                                    <Link href="/AdvisoryCommity">Advisory Committee</Link>
+                                    {/*<Link href="/newsLetter">Newsletter</Link>*/}
+                                </div>
+
+                            {/* ... other mobile nav links ... */}
+
+
                     <Link href="/home">Home</Link>
                     <div className={"flex space-x-4 items-center"}>Books <FaAngleDown /></div>
                     {categories.map(category => (

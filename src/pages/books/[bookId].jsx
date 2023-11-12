@@ -161,7 +161,17 @@ function BookDetail() {
     //        lastImage?.scrollIntoView({ behavior: 'auto' });
     //
     // }, [bookPages]);
+    const scrollRef = useRef(null);
 
+    const saveScrollPosition = () => {
+        if (scrollRef.current) {
+            scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+        }
+    };
+
+    useEffect(() => {
+        saveScrollPosition();
+    }, [bookPages]);
     useEffect(() => {
         if (bookId) {
             api.get(`/books/${bookId}/`).then(response => {
@@ -348,19 +358,36 @@ function BookDetail() {
                                         </div>
                                     ) : (
 
-                                        <div className="h-[90vh] overflow-y-scroll">
+                                        //     {bookPages.map((page, index) => (
+                                        //         <img
+                                        //             key={page}
+                                        //             src={page}
+                                        //             alt={`Page ${index + 1}`}
+                                        //             id={index === bookPages.length - 1 ? 'last-loaded-image' : ''} // Add id only to the last image
+                                        //             className={`mx-auto object-contain ${isFullScreen ? "w-11/12" : "w-1/3"} mt-4`}
+                                        //         />
+                                        //     ))}
+                                        //     <div className={"flex justify-center"}>
+                                        //     <button onClick={fetchPages} className="mt-4 p-2 bg-blue-500 text-white rounded ">Load More</button>
+                                        //     </div>
+                                        // </div>
+                                        <div ref={scrollRef} className="h-[90vh] overflow-y-scroll">
+                                        <InfiniteScroll
+                                            dataLength={bookPages.length}
+                                            next={fetchPages}
+                                            hasMore={!isEndOfBook}
+                                            loader={<h4>Loading...</h4>}
+                                            endMessage={<p>End of Book</p>}
+                                        >
                                             {bookPages.map((page, index) => (
                                                 <img
-                                                    key={page}
+                                                    key={index}
                                                     src={page}
                                                     alt={`Page ${index + 1}`}
-                                                    id={index === bookPages.length - 1 ? 'last-loaded-image' : ''} // Add id only to the last image
                                                     className={`mx-auto object-contain ${isFullScreen ? "w-11/12" : "w-1/3"} mt-4`}
                                                 />
                                             ))}
-                                            <div className={"flex justify-center"}>
-                                            <button onClick={fetchPages} className="mt-4 p-2 bg-blue-500 text-white rounded ">Load More</button>
-                                            </div>
+                                        </InfiniteScroll>
                                         </div>
 
 
