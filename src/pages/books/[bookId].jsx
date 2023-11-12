@@ -198,7 +198,7 @@ function BookDetail() {
             // This gets the first new image element
             const newStartElement = document.getElementById(`page-${newImagesStartRef.current}`);
             if (newStartElement) {
-                newStartElement.scrollIntoView({ behavior: 'smooth' });
+                newStartElement.scrollIntoView({ behavior: 'auto' });
             }
             newImagesStartRef.current = null; // Reset the ref for the next fetch
         }
