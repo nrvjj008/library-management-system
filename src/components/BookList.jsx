@@ -11,7 +11,7 @@ const Books = () => {
                         Authorization: `Bearer ${token}`,
                     },
                 };
-                const response = await axios.get("https://nasaqlibrary.org/ebooks/api/books/", config);
+                const response = await axios.get("http://localhost:8000/ebooks/api/books/", config);
                 console.log(response.data);
             } catch (error) {
                 console.error("An error occurred while fetching data: ", error);

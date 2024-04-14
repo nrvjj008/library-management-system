@@ -81,9 +81,9 @@ export default function NavBar({ onSearch, onCategoryChange }) {
                             <li className="px-4 py-2 hover:bg-gray-200">
                                 <Link href="/AdvisoryCommity">Advisory Committee</Link>
                             </li>
-                            {/*<li className="px-4 py-2 hover:bg-gray-200">*/}
-                            {/*    <Link href="/newsLetter">Newsletter</Link>*/}
-                            {/*</li>*/}
+                            <li className="px-4 py-2 hover:bg-gray-200">
+                                <Link href="/newsLetter">Newsletter</Link>
+                            </li>
                         </ul>
                     )}
                 </li>
@@ -180,7 +180,7 @@ export default function NavBar({ onSearch, onCategoryChange }) {
                                 <div className="flex flex-col pl-4 space-y-2">
                                     <Link href="/aboutUs">About Us</Link>
                                     <Link href="/AdvisoryCommity">Advisory Committee</Link>
-                                    {/*<Link href="/newsLetter">Newsletter</Link>*/}
+                                    <Link href="/newsLetter">Newsletter</Link>
                                 </div>
 
                             {/* ... other mobile nav links ... */}
