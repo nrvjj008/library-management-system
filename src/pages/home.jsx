@@ -15,6 +15,7 @@ export default function Home() {
     const [searchResults, setSearchResults] = useState(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const router = useRouter();
+    const [isSubscribed, setIsSubscribed] = useState(false);
 
     const loadCategoryBooks = async () => {
         try {
@@ -39,18 +40,31 @@ export default function Home() {
             setIsAuthenticated(true);
         }
     }, []);
-
+    const checkSubscriptionStatus = async () => {
+        try {
+            const response = await api.get('newsletter-status/');
+            setIsSubscribed(response.data.is_subscribed);  // Assuming response.data is a boolean
+            console.log(response.data);
+        } catch (error) {
+            console.error('Error fetching subscription status:', error);
+        } finally {
+        }
+    };
     useEffect(() => {
         api.get('/books/').then(response => {
             setData(response.data);
         }).catch(error => {
             console.error(error);
         });
+        checkSubscriptionStatus();
+
     }, []);
 
     if (!isAuthenticated) {
         return null; // or a loading spinner, etc.
     }
+
+
     const handleSearch = async (e) => {
         e.preventDefault();
         const searchTerm = e.target.search.value;
@@ -83,6 +97,8 @@ export default function Home() {
             }));
         };
 
+
+
         return (
             <div>
                 <h2 className="text-2xl font-bold text-start  mt-8 px-4 py-2">{categoryName}</h2>
@@ -106,6 +122,20 @@ export default function Home() {
         );
     };
 
+    const handleSubscriptionChange = async () => {
+        const endpoint = isSubscribed ? '/unsubscribe-newsletter/' : '/subscribe-newsletter/';
+        try {
+            await api.post(endpoint);
+            const statusResponse = await checkSubscriptionStatus();
+            setIsSubscribed(statusResponse);
+            console.log(statusResponse);
+            alert(`You have been ${isSubscribed ? 'unsubscribed' : 'subscribed'} successfully.`);
+        } catch (error) {
+            console.error(`Error ${isSubscribed ? 'unsubscribing' : 'subscribing'} from newsletter:`, error);
+        } finally {
+            window.location.reload();
+        }
+    }
     return (
         <div className={"bg-gold text-slate-700"}>
             <NavBar onCategoryChange={(category) => setSelectedCategory(category)} />
@@ -148,6 +178,19 @@ export default function Home() {
 
                     Object.entries(data).map(([categoryName, books]) => <Category key={categoryName} categoryName={categoryName} books={books} />)
                 )}
+            </div>
+            <div>
+                <h1 className="text-3xl font-bold mb-6 text-center">Newsletter Subscription</h1>
+                <div className="flex justify-center">
+                    <p>  </p>
+                    <button
+                        onClick={handleSubscriptionChange}
+                        className={`bg-blue-950 text-white px-6 py-2 rounded hover:bg-blue-800 transition ${isSubscribed ? 'hover:bg-red-500 bg-red-600' : ''}`}
+                    >
+                        {isSubscribed ? 'Unsubscribe' : 'Subscribe'}
+                    </button>
+
+                </div>
             </div>
             <Footer/>
         </div>
